@@ -5,12 +5,11 @@ import java.util.Scanner;
 import common.DataStore;
 
 public class EmployeeApp {
-  public static void main(String[] args) {
+  public static void main() {
     Scanner sc = new Scanner(System.in);
     System.out.println("Employee Services");
-    char ch ='y';
-    while(ch=='y'){
-      System.out.println("Enter 1.Login 2.Register");
+    while(true){
+      System.out.println("Enter 1.Login 2.Register 3.Logout");
       int input_ = sc.nextInt();
       if(input_ == 1){
         Employee curr_emp = null;
@@ -34,7 +33,6 @@ public class EmployeeApp {
           System.out.println("Welcome "+empId);
           System.out.println("Services:");
           int option = 0;
-          sc.nextLine();
           while(option!=9){
             System.out.println("1.View/Edit Profile  2.Apply Leave 3.Track Leave Status 4.View Project Allocation 5.Timesheet 6.View Team Structure 7.View Time Sheet 8.View Performance Review 9.Logout");
 
@@ -64,17 +62,26 @@ public class EmployeeApp {
 
             else if(option == 2){
               System.out.println("--------------------------------------------------");
-              System.out.println("Enter of date of leave");
-              System.out.println("Enter day of month");
-              int day = sc.nextInt();
-              System.out.println("Enter Month");
-              int mon = sc.nextInt();
-              System.out.println("Enter Year");
-              int year = sc.nextInt();
+              System.out.println("Enter of date of leave (YYYY-MM-DD):");
+              LocalDate dol = null;
+              while(dol == null){
+             
+              try{
+                 String date = sc.nextLine();
+                dol = LocalDate.parse(date);
+              }
+              catch(Exception e){
+                System.out.println("pleasse enter a valid date");
+              }
+            }
+              System.out.println("Enter no of days:");
+              int leaveDays = sc.nextInt();
               sc.nextLine();
               System.out.println("Enter Reason");
               String reason = sc.nextLine();
-              EmployeeServices.applyLeave(empId, curr_emp.getMgId(), LocalDate.of(year,mon,day), reason, LocalDate.now());
+              // LocalDate leaveDate = LocalDate.of(year, mon, mon);
+              LocalDate endDate = dol.plusDays(leaveDays-1);
+              LeaveRequestServices.applyLeave(empId, curr_emp.getMgId(), dol, reason, LocalDate.now(),endDate);
               System.out.println("--------------------------------------------------");
             }
 
@@ -88,22 +95,25 @@ public class EmployeeApp {
             else if(option ==5){
               System.out.println("Enter Working Hours");
               int workingHours = sc.nextInt();
-              EmployeeServices.timeSheetEntry(empId, LocalDate.now(), workingHours);
+              AttendanceService.addWorkingHours(empId, LocalDate.now(), workingHours);
             }
 
             else if(option == 6){
               EmployeeServices.viewTeamStructure(curr_emp.getProjectId());
             }
             else if(option == 7){
-              System.out.println("Enter From Date:");
-              System.out.println("Enter day of month");
-              int day = sc.nextInt();
-              System.out.println("Enter month");
-              int month = sc.nextInt();
-              System.out.println("Enter year");
-              int year = sc.nextInt();
-              sc.nextLine();
-              EmployeeServices.viewTimeSheetEntry(empId, LocalDate.of(year, month, day));
+              System.out.println("Enter From Date in (YYYY-MM-DD):");
+              LocalDate fromDate = null;
+              while(fromDate == null){
+                try{
+              String date = sc.nextLine();
+              fromDate = LocalDate.parse(date);
+              }catch(Exception e){
+                System.out.println("Enter a valid date");
+              }
+
+              }
+              AttendanceService.viewTimeSheet(empId, fromDate);
             }
             else if(option == 8){
               System.out.println("--------------------------------------------------");
@@ -156,8 +166,12 @@ public class EmployeeApp {
         }
         
       }
-      else{
+      else if(input_ == 3){
+        System.out.println("Logging out!!");
         break;
+      }
+      else{
+        System.out.println("Enter a valid option");
       }
     }
 

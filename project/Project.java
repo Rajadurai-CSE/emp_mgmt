@@ -8,17 +8,19 @@ public class Project {
     private String projectDesc;
     private int projectManager;
     private int projectTL;
+    private LocalDate projectStartDate;
     private LocalDate projectTimeLine;
     private String[] reqSkills;
     private String status;
 
 
     public Project(int projectId, String projectName, String projectDesc,
-                   int projectManager, int projectTL, LocalDate projectTimeLine,
+                   int projectManager, int projectTL,LocalDate projectStartDate, LocalDate projectTimeLine,
                    String[] reqSkills, String status) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectDesc = projectDesc;
+        this.projectStartDate = projectStartDate;
         this.projectManager = projectManager;
         this.projectTL = projectTL;
         this.projectTimeLine = projectTimeLine;
@@ -27,17 +29,17 @@ public class Project {
 
     }
 
-    public Project(int projectId, String projectName, String projectDesc,
-                   LocalDate startDate, LocalDate endDate, String[] reqSkills) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.projectDesc = projectDesc;
-        this.projectManager = 0;
-        this.projectTL = 0;
-        this.projectTimeLine = endDate;
-        this.reqSkills = reqSkills;
-        this.status = "Planning";
-    }
+    // public Project(int projectId, String projectName, String projectDesc,
+    //                LocalDate startDate, LocalDate endDate, String[] reqSkills) {
+    //     this.projectId = projectId;
+    //     this.projectName = projectName;
+    //     this.projectDesc = projectDesc;
+    //     this.projectManager = 0;
+    //     this.projectTL = 0;
+    //     this.projectTimeLine = endDate;
+    //     this.reqSkills = reqSkills;
+    //     this.status = "Planning";
+    // }
     
     public String getStatus() {
         return status;

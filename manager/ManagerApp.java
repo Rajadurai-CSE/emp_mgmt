@@ -3,19 +3,16 @@ package manager;
 import java.time.LocalDate;
 import java.util.Scanner;
 import common.DataStore;
-import common.RandomSeed;
-import manager.Manager;
 import employee.EmployeeServices;
 import employee.LeaveRequestServices;
-import employee.Employee;
 import project.ProjectServices;
 
 public class ManagerApp {
-  public static void main(String[] args) {
+  public static void main() {
     Scanner sc = new Scanner(System.in);
     System.out.println("Manager Services");
-    char ch ='y';
-    while(ch=='y'){
+  
+    while(true){
       System.out.println("1. Login with your credentials 2. Exit");
       int input_ = sc.nextInt();
       if(input_ == 1){
@@ -27,7 +24,7 @@ public class ManagerApp {
         String passwd = sc.nextLine();
         boolean login = false;
         for(int i=0;i<DataStore.managerCount;i++){
-          if(DataStore.managers[i] != null && DataStore.managers[i].getMgId() == mgId && DataStore.managers[i].getPasswd() != null && DataStore.managers[i].getPasswd().equals(passwd)){
+          if(DataStore.managers[i].getMgId() == mgId && DataStore.managers[i].getPasswd().equals(passwd)){
             curr_mg = DataStore.managers[i];
             login = true;
           }
@@ -40,7 +37,6 @@ public class ManagerApp {
           System.out.println("Welcome "+mgId);
           System.out.println("Services:");
           int option = 0;
-          sc.nextLine();
           while(option!=11){
             System.out.println("1.Create New Project  2.View Managed Projects 3. View Project Status 4.Update Project Status 5.View All Employees 6.View Available Resources 7.Search Emp by Skill 8.Assign Emp to Project 9. Manage Leaves 10.Performance Review 11.Logout");
 
@@ -56,29 +52,50 @@ public class ManagerApp {
             else if(option == 1){
               System.out.println("--------------------------------------------------");
               System.out.println("Create New Project");
+              System.out.println("Enter Project Id:");
+              int projectId = sc.nextInt();
+              sc.nextLine();
               System.out.println("Enter Project Name:");
               String projectName = sc.nextLine();
               System.out.println("Enter Project Description:");
               String description = sc.nextLine();
-              System.out.println("Enter Start Date (YYYY MM DD):");
-              int year = sc.nextInt();
-              int month = sc.nextInt();
-              int day = sc.nextInt();
+              System.out.println("Enter Team Leader Id");
+              int tl = sc.nextInt();
               sc.nextLine();
-              System.out.println("Enter End Date (YYYY MM DD):");
-              int endYear = sc.nextInt();
-              int endMonth = sc.nextInt();
-              int endDay = sc.nextInt();
-              sc.nextLine();
+              LocalDate startDate = null;
+              LocalDate endDate = null;
+              System.out.println("Enter Start Date (YYYY-MM-DD):");
+              while(startDate == null){
+                try{
+                   String date = sc.nextLine();
+                startDate = LocalDate.parse(date);
+
+                }
+                catch(Exception e){
+                  System.out.println("please enter a valid date");
+                }
+              }
+              
+              System.out.println("Enter Deadline (YYYY-MM-DD):");
+                            while(endDate == null){
+                try{
+                   String date = sc.nextLine();
+                endDate = LocalDate.parse(date);
+
+                }
+                catch(Exception e){
+                  System.out.println("please enter a valid date");
+                }
+              }
               System.out.println("Enter Required Skills (comma separated):");
               String skillsInput = sc.nextLine();
               String[] requiredSkills = skillsInput.split(",");
-              
-              ProjectServices.createProject(projectName, description, 
-                java.time.LocalDate.of(year, month, day), 
-                java.time.LocalDate.of(endYear, endMonth, endDay), 
-                requiredSkills, curr_mg.getMgId());
-              System.out.println("Project created successfully!");
+              System.out.println("Enter Status");
+              String status = sc.nextLine();
+              ProjectServices.createProject(projectId,projectName, description, 
+                startDate, 
+                endDate, 
+                requiredSkills, curr_mg.getMgId(),tl,status);
               System.out.println("--------------------------------------------------");
             }
 
@@ -153,11 +170,11 @@ public class ManagerApp {
                 System.out.println("Approve or Reject? (A/R):");
                 String decision = sc.nextLine();
                 if(decision.equalsIgnoreCase("A")) {
-                  LeaveRequestServices.approveLeave(leaveId, curr_mg.getMgId());
+                  LeaveRequestServices.approveLeave(leaveId);
                 } else if(decision.equalsIgnoreCase("R")) {
                   System.out.println("Enter rejection reason:");
                   String reason = sc.nextLine();
-                  LeaveRequestServices.rejectLeave(leaveId, curr_mg.getMgId(), reason);
+                  LeaveRequestServices.rejectLeave(leaveId, reason);
                 }
               }
               System.out.println("--------------------------------------------------");
@@ -173,9 +190,7 @@ public class ManagerApp {
               sc.nextLine();
               System.out.println("Enter Feedback:");
               String feedback = sc.nextLine();
-              
               EmployeeServices.addPerformanceReview(empId, rating, feedback, curr_mg.getMgId());
-              System.out.println("Performance review added successfully!");
               System.out.println("--------------------------------------------------");
             }
           }

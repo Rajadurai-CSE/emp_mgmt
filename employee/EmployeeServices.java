@@ -11,6 +11,16 @@ import project.Project;
 
 public class EmployeeServices{
 
+       public static Employee findEmployeeById(int empId){
+        for(int i=0;i<DataStore.empCount;i++){
+            Employee e = DataStore.employees[i];
+            if(e.getEmpId() == empId){
+                return e;
+            }
+        }
+        return null;
+    }
+
   public static void update(Employee ele, int choice,String val) {
         if (choice == 1)        ele.setEmpName(val);
         if (choice == 2) {    
@@ -32,7 +42,7 @@ public class EmployeeServices{
         System.out.println("Name         : " + ele.getEmpName());
 
         if(ele.getProjectId()==0){
-           System.out.println("You are currently not assigned to any Projects");
+           System.out.println("Currently not assigned to any Projects");
         }
         else{
           System.out.println("Project ID   : " + ele.getProjectId());
@@ -84,27 +94,27 @@ public class EmployeeServices{
         }
         else{
          System.out.println("Team Details:");
-         ProjectServices.viewProjectTeamStructure(pid);
+            ProjectServices.viewProjectTeamStructure(pid);
         }
     
     }
 
 
-    public static void applyLeave(int empId,int mgId, LocalDate dol, String reason,LocalDate applyDate){
-      LeaveRequestServices.applyLeave(empId, mgId, dol, reason, applyDate);
-    }
+    // public static void applyLeave(int empId,int mgId, LocalDate dol, String reason,LocalDate applyDate,LocalDate endDate){
+    //   LeaveRequestServices.applyLeave(empId, mgId, dol, reason, applyDate,endDate);
+    // }
 
-    public static void viewLeaveStatus(int empId,int mgId, LocalDate dol, String reason,LocalDate applyDate){
-      LeaveRequestServices.empLeaveStatus(empId);
-    }
+    // public static void viewLeaveStatus(int empId,int mgId, LocalDate dol, String reason,LocalDate applyDate){
+    //   LeaveRequestServices.empLeaveStatus(empId);
+    // }
 
-    public static void timeSheetEntry(int empId,LocalDate date,int workingHours){
-      AttendanceService.addWorkingHours(empId,date,workingHours);
-    }
+    // public static void timeSheetEntry(int empId,LocalDate date,int workingHours){
+    //   AttendanceService.addWorkingHours(empId,date,workingHours);
+    // }
 
-    public static void viewTimeSheetEntry(int empId,LocalDate fromDate){
-      AttendanceService.viewTimeSheet(empId,fromDate);
-    }
+    // public static void viewTimeSheetEntry(int empId,LocalDate fromDate){
+    //   AttendanceService.viewTimeSheet(empId,fromDate);
+    // }
 
     public static void displayAvailableResources() {
         System.out.println("Available Employees (not assigned to projects):");
@@ -166,7 +176,7 @@ public class EmployeeServices{
         for(int i = 0; i < DataStore.empCount; i++) {
             if(DataStore.employees[i].getEmpId() == empId) {
                 String performance = DataStore.employees[i].getPerformance();
-                if(performance != null && !performance.isEmpty()) {
+                if(performance != null) {
                     System.out.println("Performance Review: " + performance);
                 } else {
                     System.out.println("No performance review found for employee " + empId);

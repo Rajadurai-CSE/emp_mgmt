@@ -8,12 +8,8 @@ import manager.Manager;
 public class RandomSeed {
 
   public static void genRandom(){
-    if (DataStore.seeded) {
-      return;
-    }
-    DataStore.seeded = true;
     int empCount = DataStore.empCount;
-    DataStore.employees[empCount] = new Employee(2867297,"Raja","AKSHay1",LocalDate.of(
+    DataStore.employees[empCount] = new Employee(2,"Raja","AK",LocalDate.of(
       2003, 3, 3));
       empCount++;
     DataStore.employees[empCount] = new Employee(2867897,"Rxja","AKdHay1",LocalDate.of(

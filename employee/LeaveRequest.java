@@ -3,22 +3,38 @@ package employee;
 import java.time.LocalDate;
 
 public class LeaveRequest {
+    private int leaveId;
     private int empId;
     private int mgId;
     private LocalDate dol;
     private String reason;
     private String status = "pending";
     private LocalDate applyDate;
-
-    LeaveRequest(int id, int mgId, LocalDate dol, String reason,LocalDate applyDate) {
+    private String rejectReason;
+    private LocalDate endDate;
+    LeaveRequest(int leaveId,int id, int mgId, LocalDate dol, String reason,LocalDate applyDate,LocalDate endDate) {
+        this.leaveId = leaveId;
         this.empId = id;
         this.mgId = mgId;
         this.dol = dol;
         this.reason = reason;
         this.applyDate = applyDate;
+        this.endDate = endDate;
     }
 
-    // Getter and Setter for empId
+    public int getLeaveRequestId(){
+        return leaveId;
+    }
+    public LocalDate getEndDate(){
+        return endDate;
+    }
+    public String getRejectReason(){
+        return rejectReason;
+    }
+    public void setRejectReason(String reason){
+        this.rejectReason = reason;
+    }
+
     public int getEmpId() {
         return empId;
     }

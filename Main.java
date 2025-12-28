@@ -33,13 +33,13 @@ public class Main {
             
             switch(choice) {
                 case 1:
-                    AdminApp.main(new String[]{});
+                    AdminApp.main();
                     break;
                 case 2:
-                    ManagerApp.main(new String[]{});
+                    ManagerApp.main();
                     break;
                 case 3:
-                    EmployeeApp.main(new String[]{});
+                    EmployeeApp.main();
                     break;
                 case 4:
                     System.out.println("Thank you for using Employee Management System!");

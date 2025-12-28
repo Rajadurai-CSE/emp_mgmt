@@ -72,10 +72,9 @@ public class ProjectServices {
 
     }
 
-    public static void createProject(String projectName, String description, LocalDate startDate, LocalDate endDate, String[] requiredSkills, int managerId) {
+    public static void createProject(int projectId, String projectName, String description, LocalDate startDate, LocalDate endDate, String[] requiredSkills, int managerId,int tl,String status) {
         if(DataStore.projectCount < DataStore.projects.length) {
-            Project project = new Project(DataStore.projectCount + 1, projectName, description, startDate, endDate, requiredSkills);
-            project.setProjectManager(managerId);
+            Project project = new Project(projectId, projectName, description, managerId, tl, startDate, endDate, requiredSkills, status);
             DataStore.projects[DataStore.projectCount] = project;
             DataStore.projectCount++;
             System.out.println("Project created successfully!");
